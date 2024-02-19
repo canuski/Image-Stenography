@@ -43,7 +43,7 @@ class EncodeWindow(QWidget):
         message = self.message_input.text()
         file_path = self.file_path_input.text()
         if message and file_path:
-            encode_image(file_path, message, 'encoded_image.png')
+            encode_image(file_path, f'.........{message}', 'encoded_image.png')
             QMessageBox.information(
                 self, "Success", "Message encoded successfully.")
         else:
