@@ -1,6 +1,5 @@
 from PIL import Image
 
-# Function to decode a message from an image
 
 def decode_image(image_path):
     img = Image.open(image_path)
@@ -20,7 +19,6 @@ def decode_image(image_path):
 
     # Convert each chunk to an integer
     message_length = int(''.join(message_length_chunks), 2)
-
 
     binary_message = ''
     byte_chunks = []
@@ -48,8 +46,3 @@ def decode_image(image_path):
         index += 1
 
     return "End of message not found"  # If null terminator is not found
-
-if __name__ == "__main__":
-    # Decode message from the encoded image
-    decoded_message = decode_image("encoded_image.png")
-    print("Decoded message:", decoded_message)
