@@ -1,0 +1,65 @@
+/* style.css */
+QWidget {
+  background-color: #ece5fb; /* Light purple background */
+  color: #333; /* Dark text color */
+}
+
+QPushButton {
+  background-color: #6a0dad; /* Purple button background */
+  color: #fff; /* White text color */
+  border: none; /* Remove button border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 25px;
+}
+
+QPushButton:hover {
+  background-color: #4e0787; /* Darker purple on hover */
+}
+
+QLabel {
+  color: #8d6abf; /* Purple text color */
+  font-size: 25px; /* Larger font size */
+  margin-bottom: 20px; /* Add margin below the label */
+}
+
+QLineEdit,
+QProgressBar {
+  background-color: #fff; /* White background */
+  color: #333; /* Dark text color */
+  border: 2px solid #6a0dad; /* Purple border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding inside the input field */
+  font-size: 20px; /* Larger font size */
+}
+
+QFileDialog QPushButton {
+  background-color: #6a0dad; /* Purple button background */
+  color: #fff; /* White text color */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 25px;
+}
+
+QFileDialog QPushButton:hover {
+  background-color: #4e0787; /* Darker purple on hover */
+}
+
+QMessageBox {
+  background-color: #fff; /* White background */
+  color: #333; /* Dark text color */
+  border: 2px solid #6a0dad; /* Purple border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+QMessageBox QPushButton {
+  background-color: #6a0dad; /* Purple button background */
+  color: #fff; /* White text color */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 25px;
+}
+
+QMessageBox QPushButton:hover {
+  background-color: #4e0787; /* Darker purple on hover */
+}

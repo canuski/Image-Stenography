@@ -1,9 +1,16 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QFileDialog, QMessageBox, QLabel, QProgressBar
+import os
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QFileDialog, QMessageBox, QLabel, QProgressBar
+from PyQt5.QtCore import Qt, QTimer
 from encode import encode_image
 from decode import decode_image
-from PyQt5.QtCore import Qt, QTimer
 
+def resource_path(relative_path):
+    try:
+        base_path =  sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 class LoadingScreen(QWidget):
     def __init__(self, parent):
@@ -14,6 +21,7 @@ class LoadingScreen(QWidget):
         self.setGeometry(300, 300, 200, 100)
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(20, 20, 20, 20)  # Add margins to layout
 
         self.label = QLabel("Processing, please wait...")
         self.progress_bar = QProgressBar()
@@ -30,7 +38,8 @@ class LoadingScreen(QWidget):
         self.timer.start(100)  # Milliseconds interval for animation
 
     def animate_progress(self):
-        self.progress_bar.setValue((self.progress_bar.value() + 1) % (self.progress_bar.maximum() + 1))
+        self.progress_bar.setValue(
+            (self.progress_bar.value() + 1) % (self.progress_bar.maximum() + 1))
 
 
 class EncodeWindow(QWidget):
@@ -40,7 +49,13 @@ class EncodeWindow(QWidget):
 
     def init_ui(self):
         self.setWindowTitle('Encode Message')
-        self.setGeometry(100, 100, 300, 200)
+
+        screen_geometry = QApplication.desktop().availableGeometry()
+        width = int(screen_geometry.width() * 0.8)
+        height = int(screen_geometry.height() * 0.8)
+        x = int(screen_geometry.width() * 0.1)
+        y = int(screen_geometry.height() * 0.1)
+        self.setGeometry(x, y, width, height)
 
         self.message_label = QLabel("Enter message:")
         self.message_input = QLineEdit()
@@ -50,6 +65,9 @@ class EncodeWindow(QWidget):
         self.back_button = QPushButton('Back')
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(50, 50, 50, 50)  # Add margins to layout
+        layout.setSpacing(20)  # Adjust spacing between widgets
+
         layout.addWidget(self.message_label)
         layout.addWidget(self.message_input)
         layout.addWidget(self.file_path_button)
@@ -62,6 +80,10 @@ class EncodeWindow(QWidget):
         self.file_path_button.clicked.connect(self.select_image)
         self.encode_button.clicked.connect(self.encode_clicked)
         self.back_button.clicked.connect(self.close)
+
+        # Apply external CSS
+        with open(resource_path('E:/Projects/Image Stenography/style.css'), 'r') as f:
+            self.setStyleSheet(f.read())
 
     def select_image(self):
         options = QFileDialog.Options()
@@ -76,7 +98,8 @@ class EncodeWindow(QWidget):
         if message and file_path:
             loading_screen = LoadingScreen(self)
             loading_screen.show()
-            encode_image(file_path, f'............{message}', 'encoded_image.png')
+            encode_image(
+                file_path, f'............{message}', 'encoded_image.png')
             loading_screen.close()
             QMessageBox.information(
                 self, "Success", "Message encoded successfully.")
@@ -94,7 +117,13 @@ class DecodeWindow(QWidget):
 
     def init_ui(self):
         self.setWindowTitle('Decode Message')
-        self.setGeometry(100, 100, 300, 200)
+
+        screen_geometry = QApplication.desktop().availableGeometry()
+        width = int(screen_geometry.width() * 0.8)
+        height = int(screen_geometry.height() * 0.8)
+        x = int(screen_geometry.width() * 0.1)
+        y = int(screen_geometry.height() * 0.1)
+        self.setGeometry(x, y, width, height)
 
         self.file_path_label = QLabel("Select Image:")
         self.file_path_input = QLineEdit()
@@ -103,6 +132,9 @@ class DecodeWindow(QWidget):
         self.back_button = QPushButton('Back')
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(50, 50, 50, 50)  # Add margins to layout
+        layout.setSpacing(20)  # Adjust spacing between widgets
+
         layout.addWidget(self.file_path_label)
         layout.addWidget(self.file_path_input)
         layout.addWidget(self.file_path_button)
@@ -114,6 +146,10 @@ class DecodeWindow(QWidget):
         self.file_path_button.clicked.connect(self.select_image)
         self.decode_button.clicked.connect(self.decode_clicked)
         self.back_button.clicked.connect(self.close)
+
+        # Apply external CSS
+        with open(resource_path('E:/Projects/Image Stenography/style.css'), 'r') as f:
+            self.setStyleSheet(f.read())
 
     def select_image(self):
         options = QFileDialog.Options()
@@ -150,7 +186,13 @@ class HomeScreen(QWidget):
         encode_button = QPushButton('Encode', self)
         decode_button = QPushButton('Decode', self)
 
+        message_label = QLabel('Image Steganography App', self)  # Added message label
+
         layout = QVBoxLayout()
+        layout.setContentsMargins(100, 100, 100, 100)  # Add margins to layout
+        layout.setSpacing(50)  # Adjust spacing between widgets
+
+        layout.addWidget(message_label)  # Add message label
         layout.addWidget(encode_button)
         layout.addWidget(decode_button)
 
@@ -160,7 +202,18 @@ class HomeScreen(QWidget):
         decode_button.clicked.connect(self.open_decode_window)
 
         self.setWindowTitle('Home Screen')
-        self.setGeometry(100, 100, 300, 200)
+
+        # Set main window size to 80% of screen size
+        screen_geometry = QApplication.desktop().availableGeometry()
+        width = int(screen_geometry.width() * 0.8)
+        height = int(screen_geometry.height() * 0.8)
+        x = int(screen_geometry.width() * 0.1)
+        y = int(screen_geometry.height() * 0.1)
+        self.setGeometry(x, y, width, height)
+
+        # Apply external CSS
+        with open(resource_path('E:/Projects/Image Stenography/style.css'), 'r') as f:
+            self.setStyleSheet(f.read())
 
     def open_encode_window(self):
         self.encode_window = EncodeWindow()
@@ -176,3 +229,4 @@ if __name__ == '__main__':
     home_screen = HomeScreen()
     home_screen.show()
     sys.exit(app.exec_())
+
