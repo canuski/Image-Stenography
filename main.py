@@ -1,8 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QFileDialog, QMessageBox, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QFileDialog, QMessageBox, QLabel, QProgressBar
 from encode import encode_image
 from decode import decode_image
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 
 
 class LoadingScreen(QWidget):
@@ -12,10 +12,25 @@ class LoadingScreen(QWidget):
         self.setWindowModality(Qt.WindowModal)
         self.setWindowTitle("Processing")
         self.setGeometry(300, 300, 200, 100)
+
         layout = QVBoxLayout()
+
         self.label = QLabel("Processing, please wait...")
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 0)  # Set to indeterminate mode
+
         layout.addWidget(self.label)
+        layout.addWidget(self.progress_bar)
+
         self.setLayout(layout)
+
+        # Add a timer to animate the progress bar
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.animate_progress)
+        self.timer.start(100)  # Milliseconds interval for animation
+
+    def animate_progress(self):
+        self.progress_bar.setValue((self.progress_bar.value() + 1) % (self.progress_bar.maximum() + 1))
 
 
 class EncodeWindow(QWidget):
