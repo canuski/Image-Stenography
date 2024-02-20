@@ -1,6 +1,6 @@
 encoded_image.png
 image.png
-__pycache__
+__pycache__/
 *.jpg
 *.jpeg
 *.gif
