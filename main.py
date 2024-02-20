@@ -1,7 +1,21 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QFileDialog, QMessageBox, QLabel
 from encode import encode_image
 from decode import decode_image
+from PyQt5.QtCore import Qt
+
+
+class LoadingScreen(QWidget):
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+        self.setWindowModality(Qt.WindowModal)
+        self.setWindowTitle("Processing")
+        self.setGeometry(300, 300, 200, 100)
+        layout = QVBoxLayout()
+        self.label = QLabel("Processing, please wait...")
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
 
 class EncodeWindow(QWidget):
@@ -13,16 +27,18 @@ class EncodeWindow(QWidget):
         self.setWindowTitle('Encode Message')
         self.setGeometry(100, 100, 300, 200)
 
+        self.message_label = QLabel("Enter message:")
         self.message_input = QLineEdit()
-        self.file_path_input = QLineEdit()
         self.file_path_button = QPushButton('Select Image')
+        self.file_path_input = QLineEdit()
         self.encode_button = QPushButton('Encode')
         self.back_button = QPushButton('Back')
 
         layout = QVBoxLayout()
+        layout.addWidget(self.message_label)
         layout.addWidget(self.message_input)
-        layout.addWidget(self.file_path_input)
         layout.addWidget(self.file_path_button)
+        layout.addWidget(self.file_path_input)
         layout.addWidget(self.encode_button)
         layout.addWidget(self.back_button)
 
@@ -43,7 +59,10 @@ class EncodeWindow(QWidget):
         message = self.message_input.text()
         file_path = self.file_path_input.text()
         if message and file_path:
-            encode_image(file_path, f'.........{message}', 'encoded_image.png')
+            loading_screen = LoadingScreen(self)
+            loading_screen.show()
+            encode_image(file_path, f'............{message}', 'encoded_image.png')
+            loading_screen.close()
             QMessageBox.information(
                 self, "Success", "Message encoded successfully.")
         else:
@@ -62,12 +81,14 @@ class DecodeWindow(QWidget):
         self.setWindowTitle('Decode Message')
         self.setGeometry(100, 100, 300, 200)
 
+        self.file_path_label = QLabel("Select Image:")
         self.file_path_input = QLineEdit()
         self.file_path_button = QPushButton('Select Image')
         self.decode_button = QPushButton('Decode')
         self.back_button = QPushButton('Back')
 
         layout = QVBoxLayout()
+        layout.addWidget(self.file_path_label)
         layout.addWidget(self.file_path_input)
         layout.addWidget(self.file_path_button)
         layout.addWidget(self.decode_button)
@@ -89,7 +110,10 @@ class DecodeWindow(QWidget):
     def decode_clicked(self):
         file_path = self.file_path_input.text()
         if file_path:
+            loading_screen = LoadingScreen(self)
+            loading_screen.show()
             decoded_message = decode_image(file_path)
+            loading_screen.close()
             if decoded_message:
                 QMessageBox.information(
                     self, "Decoded Message", f"Decoded message: {decoded_message}")

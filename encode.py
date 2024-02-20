@@ -1,9 +1,6 @@
 from PIL import Image
 
 # Function to encode a message into an image
-
-
-# Function to encode a message into an image
 def encode_image(image_path, message, output_path):
     img = Image.open(image_path)
     binary_message = ''.join(format(ord(char), '08b')
@@ -32,11 +29,4 @@ def encode_image(image_path, message, output_path):
     encoded_img = Image.new(img.mode, img.size)
     encoded_img.putdata(encoded_pixels)
     encoded_img.save(output_path)
-    print("Message encoded successfully")
 
-bug_fix='............'
-
-if __name__ == "__main__":
-    # Encode message into an image
-    encode_image('image.png', f"{bug_fix}Hello! This is a secret message!",
-                 "encoded_image.png")
